@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2005-2011 by Rivello Multimedia Consulting (RMC).                    
- * info@RivelloMultimediaConsulting.com                                                  
+ * Copyright (C) 2005-2012 by Rivello Multimedia Consulting (RMC).                    
+ * code [at] RivelloMultimediaConsulting [dot] com                                                  
  *                                                                      
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the      
@@ -21,7 +21,7 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
-// Marks the right margin of code *******************************************************************
+//Marks the right margin of code *******************************************************************
 package
 {
 	// --------------------------------------
