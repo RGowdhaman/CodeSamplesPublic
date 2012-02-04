@@ -27,7 +27,10 @@ package
 	// --------------------------------------
 	// Imports
 	// --------------------------------------
+	import com.rmc.demos.as3signalsdemo.data.types.RobotNative;
+	
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 
 
 	// --------------------------------------
@@ -39,10 +42,10 @@ package
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>AS3SignalsDemo</code> class is designed to showcase AS3Signals.</p>
+	 * <p>The <code>Example_NativeSignals</code> class is designed to showcase AS3Signals.</p>
 	 * 
 	 */
-	public class AS3SignalsDemo extends Sprite
+	public class Example_NativeSignals extends Sprite
 	{
 
 		// --------------------------------------
@@ -53,43 +56,20 @@ package
 		// PUBLIC CONST
 
 		// PRIVATE
+		
+		// PUBLIC STATIC
+		/**
+		 * The <code>RobotNative</code> class shows <code>NativeSignal</code>-based messaging.
+		 * 
+		 */
+		public static var _robotNative : RobotNative;
+
 
 		// --------------------------------------
 		// Constructor
 		// --------------------------------------
-		/**
-		 * This is the constructor.
-		 * 
-		 */
-		public function AS3SignalsDemo()
-		{
-			// SUPER
-			super();
 
-			// EVENTS
-
-			// VARIABLES
-
-			// PROPERTIES
-
-			// METHODS
-			
-			// RUN INDIVIDUAL DEMOS
-			trace ("\n\n1. Example_FlashEvents");
-			Example_FlashEvents.runExample();
-			
-			trace ("\n\n2. Example_Signals");
-			Example_Signals.runExample();
-			
-			trace ("\n\n3. Example_DeluxeSignals");
-			Example_DeluxeSignals.runExample();
-			
-			trace ("\n\n4. Example_NativeSignals");
-			Example_NativeSignals.runExample(this);
-
-		}
-
-
+		
 		// --------------------------------------
 		// Methods
 		// --------------------------------------
@@ -97,10 +77,50 @@ package
 
 		// PRIVATE
 		
+		// PUBLIC STATIC
+		/**
+		 * Create a new <code>Robot</code> instance and show messaging.
+		 * 
+		 * @param aParent_displayobject : DisplayObject
+		 * 
+		 * @return void
+		 * 
+		 */
+		public static function runExample (aParent_displayobject : Sprite) : void
+		{
+			_robotNative = new RobotNative("RobotNative");
+			aParent_displayobject.addChild(_robotNative);
+			_robotNative.clickedNativeSignal.add(_onRobotClickedNativeSignalDispatched);
+
+			// CALL
+			_robotNative.greet("Hey There - I am Robot Native!");
+
+		}
+
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		
+		/**
+		 * Handles the signal: <code>ClickedNativeSignal</code>.
+		 * 
+		 * NOTE: Ideal when you want a signal based on an existing Flash UI event.
+		 * 
+		 * @return void
+		 * 
+		 */
+		private static function _onRobotClickedNativeSignalDispatched(aMouseEvent : MouseEvent) : void
+		{
+
+			// TWO MAJOR WAYS TO ACCESS INFORMATION UPON RECEIVING A MESSAGE
+
+			// 1. Access information via 'push' (pushed along with event)
+			trace("R4a. The Robot Was Clicked. aMouseEvent  : " + aMouseEvent);
+
+			// 2. Access information via 'pull' (manually grabbed from event.target)
+			trace("R4b. The Robot Was Greeted. firstName       : " + (aMouseEvent.target as RobotNative).firstName);
+
+		}
+
 
 	}
 }

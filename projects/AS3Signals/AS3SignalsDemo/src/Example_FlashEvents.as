@@ -27,6 +27,9 @@ package
 	// --------------------------------------
 	// Imports
 	// --------------------------------------
+	import com.rmc.demos.as3signalsdemo.data.types.Person;
+	import com.rmc.demos.as3signalsdemo.events.PersonEvent;
+	
 	import flash.display.Sprite;
 
 
@@ -41,8 +44,20 @@ package
 	/**
 	 * <p>The <code>AS3SignalsDemo</code> class is designed to showcase AS3Signals.</p>
 	 * 
+	 * <p>AUTHOR  : Samuel Asher Rivello</p>
+	 * <p>COMPANY : RivelloMultimediaConsulting.com</p>
+	 * <p>EMAIL   : info@RivelloMultimediaConsulting.com</p>
+	 * <p>CREATION DATE    : Apr 05, 2011</p>
+	 * 
+	 * @example Here is a code example. 
+	 *  
+	 * <listing version="3.0">
+	 * <p>Describe this code example.</p>
+	 *
+	 * </listing>
+	 *
 	 */
-	public class AS3SignalsDemo extends Sprite
+	public class Example_FlashEvents extends Sprite
 	{
 
 		// --------------------------------------
@@ -53,41 +68,16 @@ package
 		// PUBLIC CONST
 
 		// PRIVATE
+		/**
+		 * The <code>Person</code> class shows <code>Event</code>-based messaging.
+		 * 
+		 */
+		public static var _person : Person;
+
 
 		// --------------------------------------
 		// Constructor
 		// --------------------------------------
-		/**
-		 * This is the constructor.
-		 * 
-		 */
-		public function AS3SignalsDemo()
-		{
-			// SUPER
-			super();
-
-			// EVENTS
-
-			// VARIABLES
-
-			// PROPERTIES
-
-			// METHODS
-			
-			// RUN INDIVIDUAL DEMOS
-			trace ("\n\n1. Example_FlashEvents");
-			Example_FlashEvents.runExample();
-			
-			trace ("\n\n2. Example_Signals");
-			Example_Signals.runExample();
-			
-			trace ("\n\n3. Example_DeluxeSignals");
-			Example_DeluxeSignals.runExample();
-			
-			trace ("\n\n4. Example_NativeSignals");
-			Example_NativeSignals.runExample(this);
-
-		}
 
 
 		// --------------------------------------
@@ -96,11 +86,45 @@ package
 		// PUBLIC
 
 		// PRIVATE
-		
+		/**
+		 * Create a new <code>Person</code> instance and show messaging.
+		 * 
+		 * @return void
+		 * 
+		 */
+		public static function runExample() : void
+		{
+			_person = new Person("Sam");
+
+			// P1.
+			_person.addEventListener(PersonEvent.GREETED, _onPersonGreeted);
+
+			// CALL
+			_person.greet("Hello!");
+			
+		}
+
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		
+		/**
+		 * Handles the event: <code>PersonEvent.GREETED</code>.
+		 * 
+		 * @param event <code>PersonEvent</code> The incoming event payload.
+		 *  
+		 * @return void
+		 * 
+		 */
+		public static function _onPersonGreeted(aPersonEvent : PersonEvent) : void
+		{
+			// TWO MAJOR WAYS TO ACCESS INFORMATION UPON RECEIVING A MESSAGE
+
+			// 1. Access information via 'push' (pushed along with event)
+			trace("P1a. The Person Was Greeted. greetedMessage   : " + aPersonEvent.greetedMessage);
+
+			// 2. Access information via 'pull' (manually grabbed from event.target)
+			trace("P1b. The Person Was Greeted. firstName        : " + (aPersonEvent.target as Person).firstName);
+		}
 
 	}
 }

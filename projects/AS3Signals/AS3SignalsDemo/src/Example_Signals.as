@@ -27,6 +27,8 @@ package
 	// --------------------------------------
 	// Imports
 	// --------------------------------------
+	import com.rmc.demos.as3signalsdemo.data.types.Robot;
+	
 	import flash.display.Sprite;
 
 
@@ -39,10 +41,11 @@ package
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>AS3SignalsDemo</code> class is designed to showcase AS3Signals.</p>
+	 * <p>The <code>Example_Signals</code> class is designed to showcase AS3Signals.</p>
 	 * 
+	 *
 	 */
-	public class AS3SignalsDemo extends Sprite
+	public class Example_Signals extends Sprite
 	{
 
 		// --------------------------------------
@@ -53,42 +56,17 @@ package
 		// PUBLIC CONST
 
 		// PRIVATE
+		
+		// PRIVATE STATIC
+		/**
+		 * The <code>Robot</code> class shows <code>Signal</code>-based messaging.
+		 * 
+		 */
+		private static var _robot : Robot;
 
 		// --------------------------------------
 		// Constructor
 		// --------------------------------------
-		/**
-		 * This is the constructor.
-		 * 
-		 */
-		public function AS3SignalsDemo()
-		{
-			// SUPER
-			super();
-
-			// EVENTS
-
-			// VARIABLES
-
-			// PROPERTIES
-
-			// METHODS
-			
-			// RUN INDIVIDUAL DEMOS
-			trace ("\n\n1. Example_FlashEvents");
-			Example_FlashEvents.runExample();
-			
-			trace ("\n\n2. Example_Signals");
-			Example_Signals.runExample();
-			
-			trace ("\n\n3. Example_DeluxeSignals");
-			Example_DeluxeSignals.runExample();
-			
-			trace ("\n\n4. Example_NativeSignals");
-			Example_NativeSignals.runExample(this);
-
-		}
-
 
 		// --------------------------------------
 		// Methods
@@ -97,10 +75,38 @@ package
 
 		// PRIVATE
 		
+		// PUBLIC STATIC
+		/**
+		 * Create a new <code>Robot</code> instance and show messaging.
+		 * 
+		 * @return void
+		 * 
+		 */
+		public static function runExample () : void
+		{
+			_robot = new Robot("Robot");
+			_robot.signal.add(_onRobotSignalGreeted);
+			_robot.greet("It is me, the Robot!");
+
+		}
+
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		
+		/**
+		 * Handles the signal: <code>Signal</code>.
+		 * 
+		 * NOTE: Ideal when you want a quick messaging setup with no parameters passed and no custom classes created
+		 * 
+		 * @return void
+		 * 
+		 */
+		private static function _onRobotSignalGreeted() : void
+		{
+			// Access information via 'push' (pushed along with event)
+			trace("R1a. The Robot Was Greeted. No parameters are passed.");
+
+		}
 
 	}
 }

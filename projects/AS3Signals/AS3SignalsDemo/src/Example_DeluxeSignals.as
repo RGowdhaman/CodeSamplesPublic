@@ -27,6 +27,9 @@ package
 	// --------------------------------------
 	// Imports
 	// --------------------------------------
+	import com.rmc.demos.as3signalsdemo.data.types.RobotDeluxe;
+	import com.rmc.demos.as3signalsdemo.events.GreetedDeluxeSignalEvent;
+	
 	import flash.display.Sprite;
 
 
@@ -39,10 +42,10 @@ package
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>AS3SignalsDemo</code> class is designed to showcase AS3Signals.</p>
+	 * <p>The <code>Example_DeluxeSignals</code> class is designed to showcase AS3Signals.</p>
 	 * 
 	 */
-	public class AS3SignalsDemo extends Sprite
+	public class Example_DeluxeSignals extends Sprite
 	{
 
 		// --------------------------------------
@@ -53,42 +56,16 @@ package
 		// PUBLIC CONST
 
 		// PRIVATE
+		/**
+		 * The <code>RobotDeluxe</code> class shows <code>DeluxeSignal</code>-based messaging.
+		 * 
+		 */
+		private static var _robotDeluxe : RobotDeluxe;
+
 
 		// --------------------------------------
 		// Constructor
 		// --------------------------------------
-		/**
-		 * This is the constructor.
-		 * 
-		 */
-		public function AS3SignalsDemo()
-		{
-			// SUPER
-			super();
-
-			// EVENTS
-
-			// VARIABLES
-
-			// PROPERTIES
-
-			// METHODS
-			
-			// RUN INDIVIDUAL DEMOS
-			trace ("\n\n1. Example_FlashEvents");
-			Example_FlashEvents.runExample();
-			
-			trace ("\n\n2. Example_Signals");
-			Example_Signals.runExample();
-			
-			trace ("\n\n3. Example_DeluxeSignals");
-			Example_DeluxeSignals.runExample();
-			
-			trace ("\n\n4. Example_NativeSignals");
-			Example_NativeSignals.runExample(this);
-
-		}
-
 
 		// --------------------------------------
 		// Methods
@@ -96,11 +73,47 @@ package
 		// PUBLIC
 
 		// PRIVATE
-		
+
+		// PUBLIC STATIC
+		/**
+		 * Create a new <code>Robot</code> instance and show messaging.
+		 * 
+		 * @return void
+		 * 
+		 */
+		public static function runExample () : void
+		{
+
+			_robotDeluxe = new RobotDeluxe("RobotDeluxe");
+			_robotDeluxe.greetedDeluxeSignal.add(_onRobotGreetedDeluxeSignalDispatched);
+			_robotDeluxe.greet("Hi I Am The Robot Delux");
+
+
+		}
+
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		
+		/**
+		 * Handles the signal: <code>GreetedDeluxeSignal</code>.
+		 * 
+		 * NOTE: Ideal when you want rich information sent in an organized way along with message
+		 * 
+		 * @return void
+		 * 
+		 */
+		private static function _onRobotGreetedDeluxeSignalDispatched(aGreetedDeluxeSignalEvent : GreetedDeluxeSignalEvent) : void
+		{
+
+			// TWO MAJOR WAYS TO ACCESS INFORMATION UPON RECEIVING A MESSAGE
+
+			// 1. Access information via 'push' (pushed along with event)
+			trace("R3a. The Robot Was Greeted. greetedMessage  : " + aGreetedDeluxeSignalEvent.greetedMessage);
+
+			// 2. Access information via 'pull' (manually grabbed from event.target)
+			trace("R3b. The Robot Was Greeted. firstName       : " + (aGreetedDeluxeSignalEvent.target as RobotDeluxe).firstName);
+
+		}
 
 	}
 }
