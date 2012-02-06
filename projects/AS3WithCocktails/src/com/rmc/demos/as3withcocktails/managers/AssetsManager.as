@@ -22,78 +22,31 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package com.rmc.demos.as3withcocktails
+package com.rmc.demos.as3withcocktails.managers
 {
-	// --------------------------------------
-	// Imports
-	// --------------------------------------
-	import com.rmc.demos.as3withcocktails.managers.AssetsManager;
 	
-	import flash.display.Sprite;
-
-
-	// --------------------------------------
-	// Metadata
-	// --------------------------------------
-
-
-	// --------------------------------------
-	// Class
-	// --------------------------------------
-	/**
-	 * <p>The <code>AS3WithCocktailsDocumentClass</code> class is designed to setup basic layout.</p>
-	 * 
-	 */
-	public class AS3WithCocktailsDocumentClass extends Sprite
-	{
-
-		// --------------------------------------
-		// Properties
-		// --------------------------------------
-		// PUBLIC GETTER/SETTERS
-
-		// PUBLIC CONST
-
-		// PRIVATE
-
-		// --------------------------------------
-		// Constructor
-		// --------------------------------------
+	//--------------------------------------
+	//  Imports
+	//--------------------------------------
+	
+	
+	//--------------------------------------  
+	//  Class
+	//--------------------------------------
+	public class AssetsManager
+	{		
+		
+		//--------------------------------------
+		//  Properties
+		//--------------------------------------
+		//PUBLIC CONST
 		/**
-		 * This is the constructor.
+		 *  
 		 * 
 		 */
-		public function AS3WithCocktailsDocumentClass()
-		{
-			// SUPER
-			super();
-
-			// EVENTS
-
-			// VARIABLES
-
-			// PROPERTIES
-
-			// METHODS
-			
-			// ADD BACKGROUND
-			addChild(new AssetsManager.BACKGROUND());
-
-		}
-
-
-		// --------------------------------------
-		// Methods
-		// --------------------------------------
-		// PUBLIC
-
-		// PRIVATE
+		[Embed(source="../../../../../../assets_compiletime/fla/AS3WithCocktails_Assets_v1.swf",symbol="BackgroundMC")]
+		public static var BACKGROUND : Class;
 		
-		// --------------------------------------
-		// Event Handlers
-		// --------------------------------------
 		
-
 	}
 }
-    
