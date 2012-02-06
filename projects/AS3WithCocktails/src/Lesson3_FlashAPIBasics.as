@@ -40,10 +40,10 @@ package
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>AS3WithCocktails</code> class is designed to setup basic layout.</p>
+	 * <p>The <code>Lesson3_FlashAPIBasics</code> class.</p>
 	 * 
 	 */
-	public class AS3WithCocktails extends AS3WithCocktailsDocumentClass
+	public class Lesson3_FlashAPIBasics extends AS3WithCocktailsDocumentClass
 	{
 		
 		// --------------------------------------
@@ -57,7 +57,7 @@ package
 		 * This is the constructor.
 		 * 
 		 */
-		public function AS3WithCocktails()
+		public function Lesson1_AS3LanguageBasics()
 		{
 			// SUPER
 			super();
