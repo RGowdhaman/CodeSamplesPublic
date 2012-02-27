@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" width="100%" height="100%"
+		 creationComplete="group1_initializeHandler(event)"
+		 resize="group1_resizeHandler(event)"
+		 >
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			//--------------------------------------
+			//  Imports
+			//--------------------------------------	
+			import mx.collections.ArrayCollection;
+			import mx.events.CollectionEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			
+			
+			//--------------------------------------
+			//  Properties
+			//--------------------------------------	
+			[Bindable]
+			public var dataProvider : ArrayCollection;
+			
+			[Bindable]
+			public var trailsAmount : uint;
+			
+			private var _offscreenBitmapData : BitmapData;	
+			
+			private var _offscreenBitmapDataColorTransform : ColorTransform = new ColorTransform();
+			
+			//--------------------------------------
+			//  Methods
+			//--------------------------------------	
+			protected function createOffScreenBitmapData () : void
+			{
+				_offscreenBitmapData = new BitmapData (this.width, this.height,false, 0x00000);
+				onscreenBitmapImage.source = _offscreenBitmapData;
+			}	
+			
+			//--------------------------------------
+			//  Events
+			//--------------------------------------	
+			protected function onCollectionChange(event:CollectionEvent):void
+			{
+				//
+			}
+			protected function group1_initializeHandler(event:FlexEvent):void
+			{
+				//properties
+				trailsAmount = 0;
+				
+				//bitmapdata
+				createOffScreenBitmapData();
+				
+				//dataprovider
+				if (dataProvider == null) {
+					dataProvider = new ArrayCollection ();
+				}
+				dataProvider.addEventListener(CollectionEvent.COLLECTION_CHANGE, onCollectionChange);
+				
+				
+				//run every frame
+				addEventListener(Event.ENTER_FRAME,onEnterFrame);
+			}
+			protected function onEnterFrame(event:Event):void
+			{
+				//clear
+				//_offscreenBitmapData.fillRect(_offscreenBitmapData.rect,0x0FFFFFFF);
+				//_offscreenBitmapData.copyPixels(_offscreenBitmapData,_offscreenBitmapData.rect,new Point (0,0));
+				
+				_offscreenBitmapDataColorTransform.alphaMultiplier = trailsAmount/100;
+				_offscreenBitmapData.colorTransform (_offscreenBitmapData.rect, _offscreenBitmapDataColorTransform);
+				var matrix : Matrix;
+				for each (var sprite : Sprite in dataProvider) {
+					//trace ("well : " + sprite);
+					matrix = new Matrix ();
+					matrix.rotate(sprite.rotation); //(sprite.x,sprite.y);
+					matrix.scale (sprite.scaleX, sprite.scaleY);
+					matrix.translate(sprite.x,sprite.y);
+					
+					
+					_offscreenBitmapData.draw(sprite,matrix); //(sprite.graphics.bi, new Rectangle (0,0,30,30),new Point (sprite.x,sprite,y));
+				}
+				
+			}
+
+
+			protected function group1_resizeHandler(event:ResizeEvent):void
+			{
+				createOffScreenBitmapData();
+			}
+
+		]]>
+	</fx:Script>
+	<s:BitmapImage id = "onscreenBitmapImage" width = "100%" height = "100%"  />
+</s:Group>

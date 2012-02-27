@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" parentProject="1441c312-e031-42c4-9821-91da19aa46e9" projectUUID="c7fd393f-cd4c-4a31-970f-0c9caca6dc53" sdkVersion="4.0.0" uuid="65271bda-72f7-45ff-bb2c-42639ebd946d" version="3">
+  <projects>
+    <project filename="RMCCodeLibrary.fxpl" position="2" projectUUID="fada2a75-d28d-444e-8d2e-51c247a2848a" uuid="65271bda-72f7-45ff-bb2c-42639ebd946d"/>
+  </projects>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="65271bda-72f7-45ff-bb2c-42639ebd946d"/>
+    <linked location="/libs" path="/libs" position="1" uuid="935f61b2-00c3-4809-8320-757564be63a0"/>
+  </swc>
+  <misc/>
+  <theme/>
+</fxpProperties>

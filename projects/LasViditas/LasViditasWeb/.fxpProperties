@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<fxpProperties abbreviated="false" authoringTool="Flex Builder" compiles="true" parentProject="3d98bf54-36ab-4881-b986-8c585172bcd0" projectUUID="3d98bf54-36ab-4881-b986-8c585172bcd0" sdkVersion="4.0.0" uuid="65271bda-72f7-45ff-bb2c-42639ebd946d" version="3">
+  <projects>
+    <project filename="LasViditasLibrary.fxpl" position="1" projectUUID="c7fd393f-cd4c-4a31-970f-0c9caca6dc53" uuid="65271bda-72f7-45ff-bb2c-42639ebd946d"/>
+  </projects>
+  <src/>
+  <swc>
+    <linked location="sdkPlaceHolder" path="sdkPlaceHolder" position="0" uuid="65271bda-72f7-45ff-bb2c-42639ebd946d"/>
+  </swc>
+  <misc/>
+  <theme/>
+</fxpProperties>

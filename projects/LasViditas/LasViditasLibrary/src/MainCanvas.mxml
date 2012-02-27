@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/halo" 
+			   xmlns:local="*" 
+			   xmlns:controls="com.rmc.controls.*"
+			   
+			   width = "100%"
+			   height = "100%"
+			   
+			   initialize="onInitialize (event);"
+			   creationComplete="onApplicationComplete (event);"
+			   >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.rmc.utils.Environment;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.IList;
+			import mx.core.FlexGlobals;
+			import mx.core.IFlexDisplayObject;
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.Button;
+			import spark.components.HGroup;
+			import spark.components.Panel;
+			import spark.components.TextArea;
+			import spark.layouts.HorizontalLayout;
+			import spark.layouts.VerticalAlign;
+			import spark.layouts.VerticalLayout;
+			
+			import view.Food;
+			import view.Vidita;
+			
+			
+			//--------------------------------------
+			//  Properties
+			//--------------------------------------	
+			private var _sharedCore:ISharedCore;	// Code to interfaces;
+			
+			
+			//APPLICATION
+			private var _viditas_array : Array;
+			[Bindable] private var _simulationFactor : uint; 
+			[Bindable] private var _simulationElapsedTimeMS_num : Number; 
+			private var _simulationFactorEnterFrameCounter_uint : uint;
+			
+			//VIDITA
+			[Bindable] private var _selected_vidita : Vidita;  
+			[Bindable] private var _viditaSpeedFactor : uint;    
+			[Bindable] private var _viditaScaleFactor : uint;  
+			[Bindable] private var _blittingSprites_arraycollection : ArrayCollection;
+			[Bindable] private var _viditasPopulationFactor_uint : uint;
+
+			//FOOD
+			private var _foods_array : Array;
+			[Bindable] private var _foodDistributionFrequencyFactor_uint : uint;
+			[Bindable] private var _foodDistributionVolume_uint : uint;
+			private var _foodDistribution_timer: Timer;
+			
+			private var _isSimulationPaused_boolean : Boolean;
+			
+			
+			//--------------------------------------
+			//  Methods
+			//--------------------------------------	
+			private function _toggleFullScreen (aEvent : * = null) : void 
+			{
+				_sharedCore.toggleFullScreen(FlexGlobals.topLevelApplication.stage);
+			}
+			
+			private function _resetSimulation () : void
+			{
+				//
+				_isSimulationPaused_boolean = false;
+				
+				//create viditas
+				_viditas_array = new Array ();
+				
+				//factory
+				_sharedCore = SharedCoreFactory.getSharedCoreInstance();
+				
+				//reset here because 2-way bindings sets it to 0 initially (TODO, figure out why)
+				_simulationFactor = 50;//keep at 50 so that we can go BOTH slower and faster as exceptions?
+				_viditaSpeedFactor = 50;//keep at 50 so that we can go BOTH slower and faster as exceptions?
+				_viditaScaleFactor = 50;//keep at 50 so that we can go BOTH slower and faster as exceptions?
+				_isSimulationPaused_boolean = false;
+				_simulationElapsedTimeMS_num = 0;
+				_simulationFactorEnterFrameCounter_uint = 0;
+				renderSpeed_superHSlider.value = 30;//TODO, populate based on actual framerate
+				//food
+				_foodDistributionFrequencyFactor_uint 	= 10;
+				_foodDistributionVolume_uint 			= 10;
+				_foodDistribution_timer 				= new Timer (1000,0);
+				_foods_array = new Array();
+				
+				//create food instantly
+				onFoodDistributionTimerComplete (new TimerEvent (TimerEvent.TIMER));
+				
+				//create
+				_createViditas (_viditasPopulationFactor_uint);
+				
+				//set bounds
+				_updateViditaMovementBounds();
+				
+				//
+				_startFoodDistributionTimer();
+				
+				//run the engine (this is the sole enterframe in the project, right?)
+				addEventListener(Event.ENTER_FRAME,onEnterFrame);
+				_foodDistribution_timer.addEventListener(TimerEvent.TIMER , onFoodDistributionTimerComplete);
+			}
+			
+			private function _createViditas (aNumberToCreate_uint : uint) : void
+			{
+				//viditas setup
+				var layoutBounds : Rectangle = new Rectangle (0, 0, blittingGroup_panel.width,blittingGroup_panel.height - 30);
+				//
+				for (var i : uint = 0; i  <= aNumberToCreate_uint; i++) {
+					_viditas_array.push( new Vidita(layoutBounds));
+					
+				}
+				_updateBlittingSpritesList();
+
+			}
+			
+			private function _destroyViditas (aNumberToDestroy_uint : uint) : void
+			{
+				aNumberToDestroy_uint = Math.min (_viditas_array.length, aNumberToDestroy_uint);
+				_viditas_array.splice (0, aNumberToDestroy_uint);
+				_updateBlittingSpritesList();
+			}
+			
+			private function _createFood (aNumberToCreate_uint : uint) : void
+			{
+				
+				
+				//viditas setup
+				var layoutBounds : Rectangle = new Rectangle (0, 0, blittingGroup_panel.width,blittingGroup_panel.height - 30);
+				//
+				var food : Food;
+				for (var i : uint = 0; i  <= aNumberToCreate_uint; i++) {
+					food =  new Food(layoutBounds);
+					food.addEventListener(Food.DESTROY, onFoodDestroy);
+					_foods_array.push(food);
+				}
+				_updateBlittingSpritesList();
+			}
+			
+			
+			private function _updateBlittingSpritesList () : void
+			{
+				_blittingSprites_arraycollection = new ArrayCollection ( _foods_array.concat (_viditas_array));		
+				
+				_setSelectedVidita(_viditas_array[0]);
+			}
+			
+			private function _updateViditaMovementBounds ( ):void
+			{
+				// TODO Auto-generated method stub
+				for each (var vidita : Vidita in _viditas_array) {
+					vidita.foodArray = _foods_array;
+					vidita.movementBounds = new Rectangle (0, 0, blittingGroup_panel.width,blittingGroup_panel.height - 30); //todo, -30 is for panel bar
+				}
+				
+			}
+			
+			private function _startFoodDistributionTimer ( ):void
+			{
+				//NOTE this system doesn't rush the current food distribution timer, it speeds up the subsequent food distros
+				_foodDistribution_timer.delay = 10000 - 10000*(_foodDistributionFrequencyFactor_uint/100); //10 seconds to 0 seconds (0 if very high frequency)
+				_foodDistribution_timer.start();
+				
+			}
+			
+			private function _convertMSToTime (aValue_num : Number ) : Number
+			{
+				var time_num : Number = aValue_num/1000;
+				time_num = Math.floor(time_num*100)/100
+				return time_num;
+				
+			}
+			
+			private function _setSelectedVidita (aSelected_vidita : Vidita ) : void
+			{
+				_selected_vidita = aSelected_vidita;
+				
+			}
+			
+			//--------------------------------------
+			//  Events
+			//--------------------------------------	
+			protected function onInitialize (event:FlexEvent):void
+			{
+				//set here so resetting feeds off the slider not this
+				_viditasPopulationFactor_uint = 15;
+				
+			}
+			
+			protected function onApplicationComplete (event:FlexEvent):void
+			{
+				_resetSimulation();
+			}
+
+
+			protected function blittingGroup_resizeHandler(event:ResizeEvent):void
+			{
+				_updateViditaMovementBounds();
+				
+			}
+
+			
+			protected function onEnterFrame (event:Event):void
+			{
+				
+				if (!_isSimulationPaused_boolean ) {
+					
+					//count up X frames then execute - this controls the speed of the simulation
+					if (++_simulationFactorEnterFrameCounter_uint > (5 - _simulationFactor/5) ) {
+						
+						_simulationElapsedTimeMS_num += (stage.frameRate) ; // * _simulationFactor/50;
+						
+						_simulationFactorEnterFrameCounter_uint = 0;
+						for each (var vidita : Vidita in _viditas_array) {
+							
+							//TODO, don't update every frame, do only when needed
+							vidita.targetDestination = new Point (blittingGroup.mouseX, blittingGroup.mouseY);
+							vidita.speedFactor = _viditaSpeedFactor;
+							vidita.scaleFactor = _viditaScaleFactor;
+							
+							//advance simulation
+							vidita.doTick();
+						}
+					}
+				}
+				
+			}
+
+			protected function viditasPopulationFactor_hslider_changeHandler(event:Event):void
+			{
+				//_viditasPopulationFactor
+				//trace ("_viditasPopulationFactor: " + _viditasPopulationFactor);
+				if (_viditas_array.length >= _viditasPopulationFactor_uint) {
+					_destroyViditas (_viditas_array.length - _viditasPopulationFactor_uint);
+				} else {
+					_createViditas (	_viditasPopulationFactor_uint - _viditas_array.length);
+				}
+			}
+
+			protected function renderSpeed_hslider_changeHandler(event:Event):void
+			{
+				// TODO Auto-generated method stub
+				stage.frameRate = renderSpeed_superHSlider.value;
+			}
+
+			protected function trails_hslider_changeHandler(event:Event):void
+			{
+				// TODO Auto-generated method stub
+				blittingGroup.trailsAmount = trails_superHSlider.value;
+			}
+
+
+			
+			protected function pausePlayToggle_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				_isSimulationPaused_boolean = !_isSimulationPaused_boolean;
+			}
+
+
+			protected function restart_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				_resetSimulation();
+			}
+			
+			protected function onFoodDistributionTimerComplete (event:TimerEvent):void
+			{
+				_createFood (_foodDistributionVolume_uint);
+				_startFoodDistributionTimer();
+			}
+			protected function onFoodDestroy (event : Event ):void
+			{
+				trace ("onDestroy");
+				//find food in array, remove it and then update the arrays
+				var food : Food = (event.target as Food);
+				for (var f : uint = 0; f <= _foods_array.length; f++) {
+					if (_foods_array[f] == food) {
+						_foods_array.splice (f,1);
+						_updateBlittingSpritesList();
+						break;
+					}
+				}
+			}
+
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		
+	
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:XML id="xmlDP">
+			<root>
+				<biologicalConcepts>
+					<biologicalConcept>1. Homeostasis</biologicalConcept>
+					<biologicalConcept>2. Organization</biologicalConcept>
+					<biologicalConcept>3. Metabolism</biologicalConcept>
+					<biologicalConcept>4. Growth</biologicalConcept>
+					<biologicalConcept>5. Adaption</biologicalConcept>
+					<biologicalConcept>6. Response to Stimuli</biologicalConcept>
+					<biologicalConcept>7. Reproduction</biologicalConcept>
+					<biologicalConcept></biologicalConcept>
+				</biologicalConcepts>
+				<programmingConcepts>
+					<programmingConcept>Class vs. Object</programmingConcept>
+					<programmingConcept>Inheritance vs. Composition</programmingConcept>
+					<programmingConcept>Polymorphism</programmingConcept>
+					<programmingConcept></programmingConcept>
+				</programmingConcepts>
+			</root>
+		</fx:XML>
+		
+		<fx:String id = "about_str" >
+			<![CDATA[Las Viditas (The Little Lifes) is an exploration project which compares ActionScript 3.0 concepts and structure to the 7 criteria for biological life. ]]>
+		</fx:String>
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:HorizontalLayout 
+			paddingTop 		= "10"
+			paddingBottom 	= "10"
+			paddingLeft 	= "10"
+			paddingRight 	= "10"
+			/>
+	</s:layout>
+
+	
+	<s:VGroup width="300" height="100%">
+		<s:Panel width="100%" height="125">
+			<s:title>Project Details</s:title>
+			<s:TextArea height = "100%" width="100%" text="{about_str}" />
+		</s:Panel>
+		<s:Panel width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout />
+			</s:layout>
+			<s:title>Settings</s:title>
+			
+			<s:RichText text="Application" width="100%"/>
+			<s:HGroup>
+				<s:Label width = "100" text = "Elapsed Time: " />
+				<s:Label  text= "{Math.floor(_simulationElapsedTimeMS_num*10)/1000}" />
+			</s:HGroup>
+			<controls:SuperHSlider 
+				id = "renderSpeed_superHSlider"
+				
+				label = "Render Speed"
+				minimumLabel = "0"
+				maximumLabel = "120"
+				minimum = "0"
+				maximum = "120"
+				
+				change = "renderSpeed_hslider_changeHandler(event)"
+				/>
+			<controls:SuperHSlider 
+				id = "trails_superHSlider"
+				
+				label = "Trails"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				change = "trails_hslider_changeHandler(event)"
+				/>
+			<s:HGroup>
+				<s:Button label = "Toggle Fullscreen" click="_toggleFullScreen(event);" />
+			</s:HGroup>
+			
+			
+			<s:Line width="100%" />
+			<s:RichText text="EcoSystem" width="100%"/>
+			<controls:SuperHSlider 
+				id = "simulationSpeed_hslider"
+				
+				label = "Simulation Speed"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				value = "@{_simulationFactor}"
+				/>
+			<controls:SuperHSlider 
+				id = "viditasPopulationFactor_hslider"
+				
+				label = "Viditas Population"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				value = "@{_viditasPopulationFactor_uint}"
+				change="viditasPopulationFactor_hslider_changeHandler(event);"
+				/>
+			<controls:SuperHSlider 
+				id = "_foodDistributionFreqency_hslider"
+				
+				label = "Food Frequency"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				value = "@{_foodDistributionFrequencyFactor_uint}"
+				change="viditasPopulationFactor_hslider_changeHandler(event);"
+				/>
+			<controls:SuperHSlider 
+				id = "_foodDistributionVolume_hslider"
+				
+				label = "Food Volume"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				value = "@{_foodDistributionVolume_uint}"
+				/>
+			<s:HGroup>
+				<s:Button label = "Throw Food" click="onFoodDistributionTimerComplete(null);" />
+				<s:Button label = "Play/Pause" click="pausePlayToggle_clickHandler(event)" />
+				<s:Button label = "Restart" click="restart_clickHandler(event)" />
+			</s:HGroup>
+			
+			<s:Line width="100%" />
+			<s:RichText text="Vidita Population" width="100%"/>
+			<controls:SuperHSlider 
+				id		= "viditaSpeedFactor_superHSlider"
+				label = "Speed Factor"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				value = "@{_viditaSpeedFactor}"
+				/>
+			<controls:SuperHSlider 
+				id = "viditaScaleFactor_hslider"
+				
+				label = "Scale Factor"
+				minimumLabel = "0"
+				maximumLabel = "100"
+				minimum = "0"
+				maximum = "100"
+				
+				value = "@{_viditaScaleFactor}"
+				/>
+			<s:Line width="100%" />
+			<s:RichText text="Vidita Selected" width="100%"/>
+			<s:HGroup>
+				<s:Image width = "50" height = "50" />
+				<s:Label id = "calories_label" 		text = "Calories: {_selected_vidita.calories}" />
+				<s:Label id = "state_label"		 	text = "State:    {_selected_vidita.state}" />
+			</s:HGroup>
+		</s:Panel>
+		
+			
+			
+		<s:Panel width="100%" height="150" >
+			<s:layout>
+				<s:VerticalLayout  />
+			</s:layout>
+			<s:title>Information</s:title>
+			<s:Scroller height="100%" width = "100%" >
+				<s:VGroup>
+					<s:RichText text="Programmatic Concepts" width="100%"/>
+					
+					<!--
+					srivello
+					rowCount=4 below
+					dataProvider="{xmlDP.programmingConcepts.programmingConcept}"
+					-->
+					<s:List 
+						horizontalScrollPolicy="off"
+						verticalScrollPolicy="off"
+						width="100%" 
+						>
+						<s:dataProvider>
+							<s:XMLListCollection source="{xmlDP.programmingConcepts.programmingConcept}" />
+						</s:dataProvider>
+					</s:List>
+					<s:RichText text="Biological Concepts" width="100%"/>
+					<!--
+					srivello
+					rowCount=7 below
+					dataProvider="{xmlDP.biologicalConcepts.biologicalConcept}"
+					-->
+					<s:List  
+						horizontalScrollPolicy="off"
+						verticalScrollPolicy="off"
+						width="100%" 
+						>
+						<s:dataProvider>
+							<s:XMLListCollection source="{xmlDP.biologicalConcepts.biologicalConcept}" />
+						</s:dataProvider>
+					</s:List>
+				</s:VGroup>
+			</s:Scroller>
+		</s:Panel>
+		
+	</s:VGroup>
+	<s:Panel id = "blittingGroup_panel" width="100%" height="100%">
+		<s:layout>
+			<s:VerticalLayout />
+		</s:layout>
+		<s:title>Ecosystem</s:title>
+		<controls:BlittingGroup id = "blittingGroup" resize="blittingGroup_resizeHandler(event)" dataProvider="{_blittingSprites_arraycollection}" width="100%" height="100%" />
+	</s:Panel>
+	
+
+	
+</s:Application>
