@@ -12,7 +12,7 @@ package
 		/**
 		 * EMBED: 	One MovieClip From The Library Linked As 'BoyAndDogRunning'
 		 */		
-		[Embed(source = '../assets_compiletime/fla/Chris_Georgenes_Assets_v1.swf', symbol = "BoyAndDogRunning")] 
+		[Embed(source = '../assets_compiletime/fla/DynamicTextureAtlasGenerator_Assets_v1.swf', symbol = "BoyAndDogRunning")] 
 		public static var BoyAndDogRunning:Class;
 		
 
@@ -28,7 +28,7 @@ package
 		 * 			With a named instance of 'myCircleInstance' &
 		 * 			With a named instance of 'myAmoebaInstance'
 		 */		
-		[Embed(source = '../assets_compiletime/fla/Chris_Georgenes_Assets_v1.swf', symbol = "SpriteSheet")] 
+		[Embed(source = '../assets_compiletime/fla/DynamicTextureAtlasGenerator_Assets_v1.swf', symbol = "SpriteSheet")] 
 		public static var SpriteSheet:Class;
 
 		

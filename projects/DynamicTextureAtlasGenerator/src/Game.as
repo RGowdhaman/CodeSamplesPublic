@@ -138,52 +138,52 @@ package {
 		}
 		
 		
-
-/**
- * Dynamic Atlas From Source: An Embedded MovieClip From SWF Which CONTAINS MovieClips
- * 
- * The SpriteSheet is just a MovieClip in the SWF with some clips within it. 
- * The clips within have instances names. We use those instance names for 'getTextures()'
- * 
- */	
-private function _doDyanmicTextureAtlas__FromEmbeddedSWFSpriteSheet () : void
-{
-	
-	
-	try {
 		
-		// 1. Setup Properties
-		var mySpriteSheet : *  = new AssetManager.SpriteSheet ();
-		
-		// 2. Create Atlas From a MovieClip Containing The MovieClips we really want
-		var myTextureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mySpriteSheet, 1, 0, true, true);
-		
-		// 3a. Create MovieClip From Atlas
-		var myCircle : MovieClip = new MovieClip(myTextureAtlas.getTextures("myCircleInstance"), 20);
-		myCircle.x = 200; myCircle.y = 300;
-		addChild(myCircle);
-		
-		// 3b. Create MovieClip From Atlas
-		var myAmoeba : MovieClip = new MovieClip(myTextureAtlas.getTextures("myAmoebaInstance"), 2);
-		myAmoeba.x = 350; myAmoeba.y = 300;
-		addChild(myAmoeba);
-		
-		// 4. Juggler will 'step' the animation forward each 'ENTER_FRAME'
-		Starling.juggler.add(myCircle);
-		Starling.juggler.add(myAmoeba);
-		
-		
-	} catch (e:Error) {
-		
-		trace ("ERROR");
-		trace (	"There was an error in the creation of the texture Atlas. ");
-		trace (	"Please check if the dimensions of your clip exceeded the maximun ");
-		trace (	"allowed texture size.");
-		trace ("[[ " + e.message + " ]]");
-		
-	}
-	
-}
+		/**
+		 * Dynamic Atlas From Source: An Embedded MovieClip From SWF Which CONTAINS MovieClips
+		 * 
+		 * The SpriteSheet is just a MovieClip in the SWF with some clips within it. 
+		 * The clips within have instances names. We use those instance names for 'getTextures()'
+		 * 
+		 */	
+		private function _doDyanmicTextureAtlas__FromEmbeddedSWFSpriteSheet () : void
+		{
+			
+			
+			try {
+				
+				// 1. Setup Properties
+				var mySpriteSheet : *  = new AssetManager.SpriteSheet ();
+				
+				// 2. Create Atlas From a MovieClip Containing The MovieClips we really want
+				var myTextureAtlas:TextureAtlas = DynamicAtlas.fromMovieClipContainer(mySpriteSheet, 1, 0, true, true);
+				
+				// 3a. Create MovieClip From Atlas
+				var myCircle : MovieClip = new MovieClip(myTextureAtlas.getTextures("myCircleInstance"), 20);
+				myCircle.x = 200; myCircle.y = 300;
+				addChild(myCircle);
+				
+				// 3b. Create MovieClip From Atlas
+				var myAmoeba : MovieClip = new MovieClip(myTextureAtlas.getTextures("myAmoebaInstance"), 2);
+				myAmoeba.x = 350; myAmoeba.y = 300;
+				addChild(myAmoeba);
+				
+				// 4. Juggler will 'step' the animation forward each 'ENTER_FRAME'
+				Starling.juggler.add(myCircle);
+				Starling.juggler.add(myAmoeba);
+				
+				
+			} catch (e:Error) {
+				
+				trace ("ERROR");
+				trace (	"There was an error in the creation of the texture Atlas. ");
+				trace (	"Please check if the dimensions of your clip exceeded the maximun ");
+				trace (	"allowed texture size.");
+				trace ("[[ " + e.message + " ]]");
+				
+			}
+			
+		}
 
 		
 	}
