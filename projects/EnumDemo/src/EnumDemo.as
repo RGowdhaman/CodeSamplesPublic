@@ -30,7 +30,7 @@ package
 	// --------------------------------------
 	import flash.display.Sprite;
 	import flash.events.Event;
-
+	
 	
 	
 	// --------------------------------------
@@ -42,10 +42,10 @@ package
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>ClassTemplate</code> class is ...</p>
+	 * <p>The <code>EnumDemo</code> class is ...</p>
 	 * 
 	 */
-	public class ClassTemplate extends Sprite
+	public class EnumDemo extends Sprite
 	{
 		
 		// --------------------------------------
@@ -64,7 +64,7 @@ package
 		 * This is the constructor.
 		 * 
 		 */
-		public function ClassTemplate()
+		public function EnumDemo()
 		{
 			// SUPER
 			super();
@@ -76,6 +76,7 @@ package
 			// PROPERTIES
 			
 			// METHODS
+			_doDemo();
 			
 		}
 		
@@ -86,24 +87,35 @@ package
 		// PUBLIC
 		
 		// PRIVATE
+		/**
+		 * Show Demo of the <code>StateEnum</code> enum.
+		 * 
+		 */		
+		private function _doDemo() : void
+		{
+			
+			//	1. STRONG TYPED & NICE USAGE
+			var current_estate : StateEnum = StateEnum.Connecting;
+			
+			//	traces 'Connecting'. Nice!
+			trace ("Instance  : " + current_estate); 	
+			
+			//	traces 'true'
+			trace ("TypeCheck : " + (current_estate is StateEnum) ); 	
+			
+			//	trace 'true' - This is the most common usage. 
+			//	Checking if a StateEnum instance matches a kind of StateEnum	
+			trace ("Match?    : " + (current_estate == StateEnum.Connecting) ); 
+			
+			//	2. PROPERLY THROWS AN ERROR - YOU CAN'T INSTANTIATE StateEnum Outside of StateEnum.as
+			//var local_enum : StateEnum = new StateEnum ();
+			
+			
+		}
 		
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		/**
-		 * Handles the Event: <code>Event.CHANGE</code>.
-		 * 
-		 * @param aEvent <code>Event</code> The incoming aEvent payload.
-		 *  
-		 * @return void
-		 * 
-		 */
-		override protected function _onChange (aEvent : Event):void
-		{
-			//
-			
-		}
-		
 		
 	}
 }

@@ -22,89 +22,73 @@
  * OTHER DEALINGS IN THE SOFTWARE.                                      
  */
 //Marks the right margin of code *******************************************************************
-package
+package com.rmc.errors
 {
 	
-	// --------------------------------------
-	// Imports
-	// --------------------------------------
-	import flash.display.Sprite;
-	import flash.events.Event;
-
+	//--------------------------------------
+	//  Imports
+	//--------------------------------------
 	
+	//--------------------------------------
+	//  Metadata
+	//--------------------------------------
 	
-	// --------------------------------------
-	// Metadata
-	// --------------------------------------
-	
-	
-	// --------------------------------------
-	// Class
-	// --------------------------------------
+	//--------------------------------------
+	//  Class
+	//--------------------------------------
 	/**
-	 * <p>The <code>ClassTemplate</code> class is ...</p>
+	 * <p>The <code>SingletonIllegalConstructorCallError</code> is thrown when a Singleton class is illegally constructed.</p>
 	 * 
-	 */
-	public class ClassTemplate extends Sprite
-	{
+	 */	
+	public class SingletonIllegalConstructionError extends Error
+	{		
 		
-		// --------------------------------------
-		// Properties
-		// --------------------------------------
-		// PUBLIC GETTER/SETTERS
+		//--------------------------------------
+		//  Properties
+		//--------------------------------------
+		//PUBLIC GETTER/SETTERS
 		
-		// PUBLIC CONST
+		//PUBLIC CONST
 		
-		// PRIVATE
+		//PRIVATE
 		
-		// --------------------------------------
-		// Constructor
-		// --------------------------------------
+		//--------------------------------------
+		//  Constructor
+		//--------------------------------------
 		/**
 		 * This is the constructor.
 		 * 
 		 */
-		public function ClassTemplate()
+		public function SingletonIllegalConstructionError(message_str : String = "SingletonIllegalConstructorCallError", aID_num : * = 0)
 		{
-			// SUPER
-			super();
+			//SUPER
+			super(message_str, aID_num);
 			
-			// EVENTS
+			//EVENTS
 			
-			// VARIABLES
+			//VARIABLES
 			
-			// PROPERTIES
+			//PROPERTIES
 			
-			// METHODS
+			//METHODS
 			
 		}
 		
 		
-		// --------------------------------------
-		// Methods
-		// --------------------------------------
-		// PUBLIC
+		//--------------------------------------
+		//  Methods
+		//--------------------------------------		
+		//PUBLIC	
 		
-		// PRIVATE
 		
-		// --------------------------------------
-		// Event Handlers
-		// --------------------------------------
-		/**
-		 * Handles the Event: <code>Event.CHANGE</code>.
-		 * 
-		 * @param aEvent <code>Event</code> The incoming aEvent payload.
-		 *  
-		 * @return void
-		 * 
-		 */
-		override protected function _onChange (aEvent : Event):void
-		{
-			//
-			
-		}
+		//PRIVATE	
+		
+		
+		//--------------------------------------
+		//  Event Handlers
+		//--------------------------------------		
+		
 		
 		
 	}
 }
-

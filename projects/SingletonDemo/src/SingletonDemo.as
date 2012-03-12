@@ -30,7 +30,7 @@ package
 	// --------------------------------------
 	import flash.display.Sprite;
 	import flash.events.Event;
-
+	
 	
 	
 	// --------------------------------------
@@ -42,16 +42,29 @@ package
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>ClassTemplate</code> class is ...</p>
+	 * <p>The <code>SingletonDemo</code> class shows how to replicate full <code>Singleton</code> functionality in AS3.</p>
+	 * 
+	 * NOTE: AS3 does not natively support singletons
+	 * NOTE: There are TWO styles of Singleton shown here. ONLY ONE is needed for your project.
+	 * 
+	 * WIKI: http://en.wikipedia.org/wiki/Singleton_pattern
 	 * 
 	 */
-	public class ClassTemplate extends Sprite
+	public class SingletonDemo extends Sprite
 	{
 		
 		// --------------------------------------
 		// Properties
 		// --------------------------------------
 		// PUBLIC GETTER/SETTERS
+		
+		// PUBLIC
+		/**
+		 * DEMO of <code>MyCustomSingleton1</code> 
+		 * 
+		 * NOTE: It requires the 'getInstance()' one time in each class that uses it.
+		 */		
+		public var MyCustomSingleton1 : CustomSingleton1 = CustomSingleton1.getInstance();
 		
 		// PUBLIC CONST
 		
@@ -64,7 +77,7 @@ package
 		 * This is the constructor.
 		 * 
 		 */
-		public function ClassTemplate()
+		public function SingletonDemo()
 		{
 			// SUPER
 			super();
@@ -76,6 +89,7 @@ package
 			// PROPERTIES
 			
 			// METHODS
+			_doTheDemo();
 			
 		}
 		
@@ -86,23 +100,43 @@ package
 		// PUBLIC
 		
 		// PRIVATE
+		/**
+		 * Show demo of a singleton.
+		 * 
+		 */		
+		private function _doTheDemo() : void
+		{
+			
+			
+			// *******************************************
+			// DEMO 1 - View the Console Output
+			// *******************************************
+			MyCustomSingleton1.traceTheSecretPhrase();
+			MyCustomSingleton1.secretePhrase = "Now the value has changed in 1.";
+			MyCustomSingleton1.traceTheSecretPhrase();
+			
+			// *******************************************
+			// DEMO 2 - View the Console Output
+			// *******************************************
+			CustomSingleton2.traceTheSecretPhrase();
+			CustomSingleton2.secretePhrase = "Now the value has changed in 2.";
+			CustomSingleton2.traceTheSecretPhrase();
+			
+			
+			// *******************************************
+			// DEMO - Impossible - This will show an error
+			// *******************************************
+			//var myFailedCustomSingleton1 = new MyCustomSingleton1 ();
+			//var myFailedCustomSingleton2 = new MyCustomSingleton2 ();
+			
+			
+			
+		}
+		
 		
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		/**
-		 * Handles the Event: <code>Event.CHANGE</code>.
-		 * 
-		 * @param aEvent <code>Event</code> The incoming aEvent payload.
-		 *  
-		 * @return void
-		 * 
-		 */
-		override protected function _onChange (aEvent : Event):void
-		{
-			//
-			
-		}
 		
 		
 	}

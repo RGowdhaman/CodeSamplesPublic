@@ -28,24 +28,25 @@ package
 	// --------------------------------------
 	// Imports
 	// --------------------------------------
+	import com.rmc.data.types.enums.Enum;
+	import com.rmc.errors.EnumIllegalConstructionError;
+	import com.rmc.utils.CStringUtils;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
-
-	
 	
 	// --------------------------------------
 	// Metadata
 	// --------------------------------------
 	
-	
 	// --------------------------------------
 	// Class
 	// --------------------------------------
 	/**
-	 * <p>The <code>ClassTemplate</code> class is ...</p>
+	 * <p>The <code>StateEnum</code> class holds all possible states for this demo.</p>
 	 * 
 	 */
-	public class ClassTemplate extends Sprite
+	public class StateEnum extends Enum
 	{
 		
 		// --------------------------------------
@@ -54,8 +55,29 @@ package
 		// PUBLIC GETTER/SETTERS
 		
 		// PUBLIC CONST
+		/**
+		 * DECLARE ALL POSSIBLE ENUMS INSTANCES
+		 */		
+		public static const Initializing : StateEnum = new StateEnum();
+		public static const Connecting   : StateEnum = new StateEnum();
+		public static const Loading      : StateEnum = new StateEnum();
+		public static const Ready        : StateEnum = new StateEnum();
+		
+		// PRIVATE STATIC
+		/**
+		 * PREVENTS INSTANTIATION OF ENUMS OUTSIDE OF THIS CLASS
+		 */		
+		static private var _IsLocked_boolean:Boolean = false;
 		
 		// PRIVATE
+		
+		// --------------------------------------
+		// Metadata
+		// --------------------------------------
+		{
+			CStringUtils.InitEnumConstants(StateEnum);
+			_IsLocked_boolean = true;
+		} 
 		
 		// --------------------------------------
 		// Constructor
@@ -64,10 +86,12 @@ package
 		 * This is the constructor.
 		 * 
 		 */
-		public function ClassTemplate()
-		{
-			// SUPER
-			super();
+		public function StateEnum() {
+			
+			// ERROR CHECK
+			if(_IsLocked_boolean) {
+				throw new EnumIllegalConstructionError ();
+			}
 			
 			// EVENTS
 			
@@ -90,20 +114,6 @@ package
 		// --------------------------------------
 		// Event Handlers
 		// --------------------------------------
-		/**
-		 * Handles the Event: <code>Event.CHANGE</code>.
-		 * 
-		 * @param aEvent <code>Event</code> The incoming aEvent payload.
-		 *  
-		 * @return void
-		 * 
-		 */
-		override protected function _onChange (aEvent : Event):void
-		{
-			//
-			
-		}
-		
 		
 	}
 }
