@@ -106,28 +106,30 @@ package
 		 */		
 		private function _doTheDemo() : void
 		{
-			
-			
-			// *******************************************
-			// DEMO 1 - View the Console Output
-			// *******************************************
-			MyCustomSingleton1.traceTheSecretPhrase();
-			MyCustomSingleton1.secretePhrase = "Now the value has changed in 1.";
-			MyCustomSingleton1.traceTheSecretPhrase();
-			
-			// *******************************************
-			// DEMO 2 - View the Console Output
-			// *******************************************
-			CustomSingleton2.traceTheSecretPhrase();
-			CustomSingleton2.secretePhrase = "Now the value has changed in 2.";
-			CustomSingleton2.traceTheSecretPhrase();
-			
-			
-			// *******************************************
-			// DEMO - Impossible - This will show an error
-			// *******************************************
-			//var myFailedCustomSingleton1 = new MyCustomSingleton1 ();
-			//var myFailedCustomSingleton2 = new MyCustomSingleton2 ();
+
+// TWO STYLES ARE SHOWN
+
+// *******************************************
+// DEMO 1 - View the Console Output (getInstance() Required)
+// *******************************************
+var MyCustomSingleton1 : CustomSingleton1 = CustomSingleton1.getInstance();
+MyCustomSingleton1.traceTheSecretPhrase();
+MyCustomSingleton1.secretePhrase = "Now the value has changed in 1.";
+MyCustomSingleton1.traceTheSecretPhrase();
+
+// *******************************************
+// DEMO 2 - View the Console Output (getInstance() *NOT* Required)
+// *******************************************
+CustomSingleton2.traceTheSecretPhrase();
+CustomSingleton2.secretePhrase = "Now the value has changed in 2.";
+CustomSingleton2.traceTheSecretPhrase();
+
+
+// *******************************************
+// DEMO - Impossible - This will show an error
+// *******************************************
+//var myFailedCustomSingleton1 = new MyCustomSingleton1 ();
+//var myFailedCustomSingleton2 = new MyCustomSingleton2 ();
 			
 			
 			
