@@ -43,3 +43,4 @@ Thumbs.db
 
 # Premium (For-Pay) Frameworks Not Fit for Distribution #
 ######################
+projects/NativeAdsContainer/src/PrivateConfiguration.as
