@@ -21,6 +21,7 @@
 			/>
 	</s:layout>
 	
+	<components:NativeAdsControlPanel unitID = "{PrivateConfiguration.AD_MOB_ID_NativeAdsContainer_Android}" />
 	
 	<s:TextArea width="100%" height="50" text="Above 'MobileAdvertisement' " verticalAlign="middle" textAlign="center" />
 	
@@ -44,6 +45,5 @@
 	
 	
 	<s:TextArea width="100%" height="30" text="Below 'MobileAdvertisement' " verticalAlign="middle" textAlign="center" />
-	<components:NativeAdsControlPanel unitID = "{PrivateConfiguration.AD_MOB_ID_NativeAdsContainer_Android}" />
 	
 </s:View>
