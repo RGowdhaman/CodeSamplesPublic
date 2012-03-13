@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		title="HomeView"
+		viewActivate="onViewActivate(event)"
+		viewDeactivate="onViewDeactivate(event)" 
+		>
+	<fx:Script>
+		<![CDATA[
+			import com.hdi.nativeExtensions.NativeAds;
+			import com.hdi.nativeExtensions.NativeAdsEvent;
+			
+			import spark.events.ViewNavigatorEvent; 
+			protected function onViewActivate(event:ViewNavigatorEvent):void
+			{
+				NativeAds.dispatcher.addEventListener(NativeAdsEvent.AD_RECEIVED,onAdReceived);
+				NativeAds.showAd(0,400 - 75,480,75);
+			}
+			
+			protected function onViewDeactivate(event:ViewNavigatorEvent):void
+			{
+				//hide ads
+				NativeAds.hideAd();
+			}
+			
+			protected function onAdReceived(event:Event):void
+			{
+				//Anything behind the ad will be hidden, update your layout to handle this edge case.
+				trace("update ui's size and position");
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup paddingLeft="10" paddingRight="10" paddingTop="20">
+		<s:Label text="Ad Mob example" />
+		<s:Label width="100%"
+				 text="The ad should be displayed at the bottom of your application." />
+		
+	</s:VGroup>
+	
+</s:View>

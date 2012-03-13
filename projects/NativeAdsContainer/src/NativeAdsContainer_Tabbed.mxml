@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TabbedViewNavigatorApplication 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	applicationDPI="160" xmlns:views="views.*"
+	
+	
+	>
+	<s:ViewNavigator label="Ad #1" width="100%" height="100%" firstView="views.FirstAdView" />
+	<s:ViewNavigator label="Ad #2" width="100%" height="100%" firstView="views.SecondAdView"/>
+	<s:ViewNavigator label="No Ad" width="100%" height="100%" firstView="views.NoAdView"/>
+	
+	<fx:Script>
+		<![CDATA[
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+</s:TabbedViewNavigatorApplication>

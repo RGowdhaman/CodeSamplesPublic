@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer
+	xmlns:views="com.rmc.projects.happybirthday.view.components.views.*" 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	
+	borderVisible="true"
+	borderColor="0x000000"
+	borderWeight="1"
+	
+	backgroundColor="0xcccccc"
+	
+	width="100%"
+	height="100%"
+	
+	>
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom="10"
+			paddingLeft="10"
+			paddingRight="10"
+			paddingTop="10"
+			verticalAlign="middle"
+			horizontalAlign="center"
+			/>
+	</s:layout>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.hdi.nativeExtensions.NativeAds;
+			import com.hdi.nativeExtensions.NativeAdsEvent;
+			import com.rmc.projects.nativeadscontainer.managers.NativeAdsManager;
+			
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			
+			//--------------------------------------
+			//  Properties
+			//--------------------------------------
+			//PUBLIC GETTER/SETTERS
+			/**
+			 *  REQUIRED: The admob.com 'Publisher ID' property.
+			 */		
+			private var _unitID : String;
+			[Bindable]
+			public function get unitID () 					: String 	{ return _unitID; }
+			public function set unitID (aValue : String) 	: void 		{ _unitID = aValue; }
+			
+			//PUBLIC
+			
+			//PUBLIC CONST
+			
+			
+			//PRIVATE
+			
+			
+			// --------------------------------------
+			// Methods
+			// --------------------------------------
+			// PUBLIC
+			
+			
+			// PRIVATE
+			
+			// --------------------------------------
+			// Event Handlers
+			// --------------------------------------
+			protected function _onCreateAdClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("Initialize");
+				if (!NativeAdsManager.unitID) {
+					NativeAdsManager.initialize(_unitID);
+				}
+				NativeAdsManager.initialize(_unitID);
+			}
+			
+			protected function _onMoveAdClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onMoveAdClick");
+				
+				var position_point : Point = new Point (Math.random()*300, 300 + Math.random()*300);
+				position_point = FlexGlobals.topLevelApplication.localToContent(position_point);
+				
+				var newBounds_rectangle: Rectangle = new Rectangle (
+					position_point.x,
+					position_point.y,
+					width,
+					height
+				);
+				
+				NativeAdsManager.moveCurrentAdTo(
+					10,
+					10,
+					newBounds_rectangle.width,
+					newBounds_rectangle.height);
+			}
+			
+			protected function _onRemoveAdClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onRemoveClick");
+				NativeAds.removeAd();
+			}
+			
+			protected function _onDeactivateAdClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onDeactivateClick");
+				NativeAds.deactivateAd();
+				NativeAds.dispose()
+			}
+			
+			protected function _onDisposeClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onDisposeClick");
+				NativeAds.dispose()
+			}
+			
+			protected function _onRestoreAdClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onRestoreAd");
+				NativeAds.restoreAd()
+			}
+			
+			protected function _onHideAdClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onHideAdClick");
+				NativeAds.hideAd();
+			}
+			
+			
+			protected function _onExitClicked(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				trace ("_onExitClicked");
+				NativeApplication.nativeApplication.exit();
+			}
+			
+			protected function _onShowBoundsClick(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				var position_point : Point = new Point (x,y);
+				trace ("\n");
+				trace ("pos: " + position_point);
+				position_point = FlexGlobals.topLevelApplication.localToContent(position_point);
+				trace ("gpos: " + position_point);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Label text="NativeAds Control Panel" width="100%" />
+	<s:TileGroup width="100%" height="100%" verticalAlign="middle" horizontalAlign="center">
+		
+		<s:Button label="Init" click="_onCreateAdClick(event)" fontSize = "8" width="50" height="30" />
+		<s:Button label="+Move" click="_onMoveAdClick(event)"  fontSize = "8" width="50" height="30" />
+		<s:Button label="+Hide" click="_onHideAdClick(event)"  fontSize = "8" width="50" height="30" />
+		<s:Button label=">Deac" click="_onDeactivateAdClick(event)"  fontSize = "8" width="50" height="30" />
+		
+		<s:Button label=">Restr" click="_onRestoreAdClick(event)"  fontSize = "8" width="50" height="30" />
+		<s:Button label="-Remv" click="_onRemoveAdClick(event)"  fontSize = "8" width="50" height="30" />
+		<s:Button label="-Disp" click="_onDisposeClick(event)"  fontSize = "8" width="50" height="30" />
+		<s:Button label="Bounds" click="_onShowBoundsClick(event)"  fontSize = "8" width="50" height="30" />
+		<s:Button label="|Exit|" click="_onExitClicked(event)"  fontSize = "8" width="50" height="30" />
+		
+	</s:TileGroup>
+	
+	<!-- Place any UI components here. -->	
+</s:BorderContainer>

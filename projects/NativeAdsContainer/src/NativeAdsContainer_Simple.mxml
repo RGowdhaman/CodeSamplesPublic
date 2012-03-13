@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" applicationDPI="160"
+			   
+			   applicationComplete="_onApplicationComplete(event)"
+			   >
+	<fx:Script>
+		<![CDATA[
+			import com.hdi.nativeExtensions.NativeAds;
+			import com.rmc.projects.nativeadscontainer.managers.NativeAdsManager;
+			
+			import mx.events.FlexEvent;
+			
+			protected function _onApplicationComplete(event:FlexEvent):void
+			{
+				//ONE-TIME SETUP
+				NativeAdsManager.initialize (PrivateConfiguration.AD_MOB_ID_NativeAdsContainer_iPad300x250);
+				
+				//make ad
+				_doMakeAdInRandomPosition();
+				
+				//make ad later
+				var timer : Timer = new Timer (3000);
+				timer.addEventListener(TimerEvent.TIMER, _onTimer);
+				timer.start();
+			}
+			
+			protected function _onTimer(event:TimerEvent):void
+			{
+				trace ("timer");
+				_doMakeAdInRandomPosition();
+			}
+			
+			protected function _doMakeAdInRandomPosition() :void
+			{
+				//MOVE TO RANDOM POSITION
+				var x : uint = Math.random()*300;
+				var y : uint = Math.random()*300;
+				NativeAdsManager.moveCurrentAdTo(x, y, 320, 50);
+				
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+</s:Application>

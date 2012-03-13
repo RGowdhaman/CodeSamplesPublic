@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:nativeadscontainer="com.rmc.components.nativeadscontainer.*"
+	
+	title="NativeAdsContainer Demo" xmlns:components="com.rmc.projects.nativeadscontainer.components.*" 
+	
+	>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:layout>
+		<s:VerticalLayout 
+			paddingBottom	="10"
+			paddingLeft		="10"
+			paddingRight	="10"
+			paddingTop		="10"
+			/>
+	</s:layout>
+	
+	
+	<s:TextArea width="100%" height="50" text="Above 'MobileAdvertisement' " verticalAlign="middle" textAlign="center" />
+	
+	
+	<!-- 
+	
+	Dynamically Insert iAD/adMob Advertisement Within an Existing Layout. 
+	The 'live' sizing is fed to the API at startup, and again upon rotation, resizing, etc..
+	
+	1) unitID = "{insert_your_admob_code_here}" or externally as unitID = "{Passwords.AD_MOB_ID}" 
+	
+	2) Change all sizing parameters to meet you needs
+	
+	-->	
+	<components:NativeAdsContainer
+		minWidth="160"  minHeight="50" 
+		maxWidth="1100" maxHeight="50" 
+		width="100%" 	height = "100%" 
+		unitID = "{PrivateConfiguration.AD_MOB_ID_NativeAdsContainer_Android}"  
+		/>
+	
+	
+	<s:TextArea width="100%" height="30" text="Below 'MobileAdvertisement' " verticalAlign="middle" textAlign="center" />
+	<components:NativeAdsControlPanel unitID = "{PrivateConfiguration.AD_MOB_ID_NativeAdsContainer_Android}" />
+	
+</s:View>
