@@ -149,6 +149,7 @@ package com.rmc.projects.nativeadscontainer.managers
 		 */		
 		public static function initialize (aUnitID_str: String):void
 		{
+		
 			NativeAdsManager.getInstance().initialize(aUnitID_str);
 		}
 		
@@ -165,6 +166,7 @@ package com.rmc.projects.nativeadscontainer.managers
 		public static function moveCurrentAdTo (aX_num : Number, aY_num : Number, aWidth_num : Number, aHeight_num : Number):void
 		{
 			NativeAdsManager.getInstance().moveCurrentAdTo (aX_num, aY_num, aWidth_num, aHeight_num)
+				NativeAds.isSupported
 		}
 		
 		// PRIVATE

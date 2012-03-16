@@ -188,6 +188,8 @@
 				
 				// unitID setter does the 'work'. We do nothing here.
 				_doRebuildSizeAndPositionForAd();
+				_onMove1()
+				_onMove1()
 			}
 			
 			/**
@@ -241,6 +243,29 @@
 				trace ("Position: " + position_point);
 			}
 			
+			protected function _onMove():void
+			{
+				var aX_num : Number = Number(x_textinput.text);
+				var aY_num : Number = Number(y_textinput.text);
+				var aWidth_num : Number = Number(width_textinput.text);
+				var aHeight_num : Number = Number(height_textinput.text);
+				trace ("\n----");
+				trace (aX_num);
+				trace (aY_num);
+				trace (aX_num);
+				trace (aWidth_num);
+				trace (aHeight_num);
+				NativeAdsManager.moveCurrentAdTo(aX_num, aY_num, aWidth_num, aHeight_num);
+				
+				//WIDE BOX CENTERED BOTTOM - 20, 910, 800, 800
+				//BIG BOX IN LOWER RIGHT - 20, 750, 320, 800
+				//SMALL BOX LOWER RIGHT  - 20, 750, 320, 50
+			}
+			protected function _onMove1():void
+			{
+				NativeAdsManager.moveCurrentAdTo(20, 910, 800, 800);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -254,7 +279,12 @@
 	<s:layout>
 		<s:HorizontalLayout/>
 	</s:layout>
-	<s:Button label="Bounds" click="_onShowBoundsClick(event)"  fontSize = "8" width="50" height="30" />
-	<s:Button label="Bounds" click="_onShowBoundsClick(event)"  fontSize = "8" width="50" height="30" />
+	<s:Button label="mv1" click="_onMove1()"  />
+	<s:Button label="mv" click="_onMove()"  />
+	<s:TextInput id="x_textinput" text="20" editable="true" width="150" />
+	<s:TextInput id="y_textinput" text="910" editable="true" width="150" />
+	<s:TextInput id="width_textinput" text="800" editable="true" width="150"/>
+	<s:TextInput id="height_textinput" text="800" editable="true" width="150"/>
+	<s:Button label="B" click="_onShowBoundsClick(event)"   />
 	
 </s:BorderContainer>
